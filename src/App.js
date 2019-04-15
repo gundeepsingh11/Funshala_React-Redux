@@ -1,28 +1,34 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { connect } from 'react-redux';
+import { updateUser } from './actions/user-actions';
 
 class App extends Component {
+  onUpdateUser = event => {
+    this.props.onUpdateUser(event.target.value);
+  };
   render() {
+    console.log(this.props);
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <section className="container">
+        <input onChange={this.onUpdateUser} />
+        <p className="blue-text">
+          {this.props.user ? this.props.user : 'No User'}
+        </p>
+      </section>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  products: state.products,
+  user: state.user,
+});
+
+const mapDispatchToProps = {
+  onUpdateUser: updateUser,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(App);
